@@ -1,0 +1,4 @@
+Modelo,P-valor Shapiro,Normal
+Random Forest,4.110409352043637e-95,Não
+Regressão Logística,1.4817941279167295e-89,Não
+SVM,1.703827018304276e-91,Não

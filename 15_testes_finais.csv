@@ -1,0 +1,4 @@
+Modelo,Chi2 p-valor,Cohen Kappa
+Random Forest,0.0,0.2240969201669204
+Regressão Logística,0.0,0.1302828763593864
+SVM,0.0,0.14597951197257175
