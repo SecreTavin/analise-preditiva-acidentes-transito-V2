@@ -193,7 +193,7 @@ O objetivo é entender padrões em acidentes de trânsito e prever quais têm ma
 ```
 projeto/
 │
-├── halving_search_15_ETAPAS_FINAL.py   # Código principal (900+ linhas)
+├── halving_search_1.2.1.py   # Código principal (900+ linhas)
 │
 ├── outputs/                             # Arquivos gerados (15+)
 │   ├── 04_analise_outliers.csv
