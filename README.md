@@ -5,7 +5,7 @@
 ![ML](https://img.shields.io/badge/Machine%20Learning-Scikit--Learn-orange)
 ![Data](https://img.shields.io/badge/Dataset-817K%20registros-red)
 
-Projeto de Machine Learning e Análise de Séries Temporais para prever a gravidade de acidentes de trânsito usando dados reais da Polícia Rodoviária Federal (PRF). Desenvolvido como parte do trabalho A3 do curso de Engenharia de Software.
+Projeto de Machine Learning e Análise de Séries Temporais para prever a gravidade de acidentes de trânsito usando dados reais da Polícia Rodoviária Federal (PRF), RENAINF e RENAEST. Desenvolvido como parte do trabalho A3 do curso de Engenharia de Software.
 
 ## 📊 Sobre o Projeto
 
@@ -27,7 +27,7 @@ O objetivo é entender padrões em acidentes de trânsito e prever quais têm ma
 ### Dataset Atual
 - **817.958 registros** de acidentes
 - **Período:** Janeiro a Agosto de 2025
-- **Fonte:** Polícia Rodoviária Federal (PRF)
+- **Fonte:** Polícia Rodoviária Federal (PRF), RENAINF, RENAEST.
 - **Desbalanceamento:** 0.41% fatais vs 99.59% não-fatais
 - **Série Temporal:** 243 dias de dados contínuos
 
