@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acidentes"
+version = "3.0.0"
+description = "Risco de fatalidade e previsão de volume em acidentes nas rodovias federais (dados abertos da PRF)"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=16",
+    "scikit-learn>=1.9",
+    "statsmodels>=0.14",
+    "matplotlib>=3.9",
+    "joblib>=1.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+acidentes = "acidentes.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

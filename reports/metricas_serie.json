@@ -1,0 +1,119 @@
+{
+  "ate": "30/09/2026",
+  "horizonte": 7,
+  "origens": 52,
+  "alvos": {
+    "acidentes": {
+      "media_diaria": 203.13424657534247,
+      "melhor": "ETS sazonal",
+      "modelos": {
+        "Ingênua sazonal": {
+          "mae": 23.293956043956044,
+          "mase": 1.0450525565428073
+        },
+        "Média de 4 semanas": {
+          "mae": 18.074175824175825,
+          "mase": 0.8108740145648223
+        },
+        "ETS sazonal": {
+          "mae": 17.486969735756915,
+          "mase": 0.7845297893605807
+        }
+      }
+    },
+    "mortos": {
+      "media_diaria": 16.915068493150685,
+      "melhor": "ETS sazonal",
+      "modelos": {
+        "Ingênua sazonal": {
+          "mae": 5.854395604395604,
+          "mase": 1.07451324215353
+        },
+        "Média de 4 semanas": {
+          "mae": 4.722527472527473,
+          "mase": 0.8667706538066251
+        },
+        "ETS sazonal": {
+          "mae": 4.274714955281598,
+          "mase": 0.7845793376916844
+        }
+      }
+    }
+  },
+  "figuras": {
+    "acidentes": "figuras/backtest_acidentes.png",
+    "mortos": "figuras/backtest_mortos.png"
+  },
+  "previsao": [
+    {
+      "data": "01/10/2026",
+      "dia_semana": "qui",
+      "acidentes": 192.6,
+      "acidentes_p10": 165.3,
+      "acidentes_p90": 219.5,
+      "mortos": 14.7,
+      "mortos_p10": 8.4,
+      "mortos_p90": 21.6
+    },
+    {
+      "data": "02/10/2026",
+      "dia_semana": "sex",
+      "acidentes": 224.0,
+      "acidentes_p10": 196.7,
+      "acidentes_p90": 250.9,
+      "mortos": 17.6,
+      "mortos_p10": 11.3,
+      "mortos_p90": 24.4
+    },
+    {
+      "data": "03/10/2026",
+      "dia_semana": "sáb",
+      "acidentes": 230.9,
+      "acidentes_p10": 203.6,
+      "acidentes_p90": 257.8,
+      "mortos": 21.5,
+      "mortos_p10": 15.3,
+      "mortos_p90": 28.4
+    },
+    {
+      "data": "04/10/2026",
+      "dia_semana": "dom",
+      "acidentes": 229.8,
+      "acidentes_p10": 202.5,
+      "acidentes_p90": 256.7,
+      "mortos": 23.9,
+      "mortos_p10": 17.7,
+      "mortos_p90": 30.8
+    },
+    {
+      "data": "05/10/2026",
+      "dia_semana": "seg",
+      "acidentes": 201.6,
+      "acidentes_p10": 174.3,
+      "acidentes_p90": 228.5,
+      "mortos": 15.9,
+      "mortos_p10": 9.6,
+      "mortos_p90": 22.8
+    },
+    {
+      "data": "06/10/2026",
+      "dia_semana": "ter",
+      "acidentes": 183.5,
+      "acidentes_p10": 156.2,
+      "acidentes_p90": 210.4,
+      "mortos": 13.7,
+      "mortos_p10": 7.5,
+      "mortos_p90": 20.6
+    },
+    {
+      "data": "07/10/2026",
+      "dia_semana": "qua",
+      "acidentes": 188.1,
+      "acidentes_p10": 160.8,
+      "acidentes_p90": 215.0,
+      "mortos": 14.5,
+      "mortos_p10": 8.3,
+      "mortos_p90": 21.4
+    }
+  ]
+}

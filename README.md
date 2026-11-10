@@ -1,378 +1,110 @@
-# 🚗 Análise Preditiva de Acidentes de Trânsito
+# Acidentes em rodovias federais: risco de morte e previsão de volume
 
-![Status](https://img.shields.io/badge/Status-Completo-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![ML](https://img.shields.io/badge/Machine%20Learning-Scikit--Learn-orange)
-![Data](https://img.shields.io/badge/Dataset-817K%20registros-red)
+Versão 3 do projeto de análise preditiva de acidentes de trânsito, refeita do
+zero. A versão anterior, do início da faculdade, está preservada na tag
+[`v2-original`](https://github.com/SecreTavin/analise-preditiva-acidentes-transito-V2/tree/v2-original). A versão anterior relatava AUC-ROC de 0,98; esse
+número vinha de um vazamento entre fontes de dados, explicado em
+[docs/diagnostico-v2.md](docs/diagnostico-v2.md).
 
-Projeto de Machine Learning e Análise de Séries Temporais para prever a gravidade de acidentes de trânsito usando dados reais da Polícia Rodoviária Federal (PRF), RENAINF e RENAEST. Desenvolvido como parte do trabalho A3 do curso de Engenharia de Software.
+Esta versão usa só os dados abertos da PRF (687 mil acidentes, de 2017 a
+setembro de 2026) e responde a duas perguntas:
 
-## 📊 Sobre o Projeto
+1. **Dado o que se sabe quando um acidente é comunicado, qual o risco de haver morte?**
+2. **Quantos acidentes e mortes esperar nos próximos sete dias?**
 
-Este projeto implementa um **pipeline completo de análise de dados** que combina técnicas de **Machine Learning** e **Análise de Séries Temporais** seguindo as **15 etapas** do Guia Prático de Análise de Séries Temporais. 
+Os resultados estão em [reports/RELATORIO.md](reports/RELATORIO.md), gerado pelo
+próprio pipeline.
 
-O objetivo é entender padrões em acidentes de trânsito e prever quais têm maior probabilidade de serem fatais, fornecendo insights acionáveis para políticas públicas de segurança viária.
+## Como rodar
 
-### 🎯 Objetivos
-
-- **Classificação:** Prever se um acidente será FATAL ou NÃO-FATAL
-- **Análise Temporal:** Identificar padrões sazonais e tendências na taxa de fatalidade
-- **Insights:** Descobrir fatores de risco mais significativos
-- **Conformidade:** Seguir rigorosamente as 15 etapas do guia científico
-
----
-
-## 📈 Dados do Projeto
-
-### Dataset Atual
-- **817.958 registros** de acidentes
-- **Período:** Janeiro a Agosto de 2025
-- **Fonte:** Polícia Rodoviária Federal (PRF), RENAINF, RENAEST.
-- **Desbalanceamento:** 0.41% fatais vs 99.59% não-fatais
-- **Série Temporal:** 243 dias de dados contínuos
-
-### Variáveis Principais
-- **Temporais:** data_hora, hora, dia_semana, mes, ano
-- **Geográficas:** endereco_id, numero_vitimas, numero_veiculos
-- **Descritivas:** tipo_acidente, descricao, gravidade
-
----
-
-## 🔧 Pipeline Completo: 15 Etapas
-
-### Etapa 1: Definir o Objetivo ✅
-- Classificação binária: Fatal vs Não-Fatal
-- Análise de série temporal da taxa de fatalidade
-
-### Etapa 2: Carregar e Organizar os Dados ✅
-- Conexão MySQL com SQLAlchemy
-- 817.958 registros carregados
-- Período: Jan-Ago 2025
-
-### Etapa 3: Verificar Dados Faltantes ✅
-- Tratamento de valores ausentes
-- Numéricos: preenchidos com 0
-- Categóricos: preenchidos com "Desconhecido"
-
-### Etapa 4: Identificar Outliers ✅ **NOVO**
-- **Método 1:** Z-Score (σ > 3)
-- **Método 2:** IQR (Intervalo Interquartil)
-- **Resultado:** 45.590 outliers em `endereco_id` e `numero_vitimas`
-- **Decisão:** Mantidos (representam eventos reais)
-
-### Etapa 5: Estatísticas Descritivas ✅
-- Taxa média de fatalidade: 0.41%
-- 3.357 acidentes fatais
-- 814.601 acidentes não-fatais
-
-### Etapa 6: Visualizar a Série ✅
-- 6 gráficos exploratórios gerados
-- Heatmap de gravidade por hora
-- Distribuição temporal (hora/dia/mês)
-
-### Etapa 7: Decomposição da Série Temporal ✅ **NOVO**
-- **Modelo:** Aditivo
-- **Período:** 7 dias (semanal)
-- **Componentes extraídos:**
-  - Tendência
-  - Sazonalidade semanal
-  - Resíduos
-
-### Etapa 8: Teste de Estacionariedade ✅ **NOVO**
-- **Teste ADF:** p=0.00001 → Estacionária ✅
-- **Teste KPSS:** p=0.01545 → Não-estacionária ⚠️
-- **Interpretação:** Série na "fronteira" de estacionariedade
-- **Análise adicional:** ACF/PACF gerados
-
-### Etapa 9: Identificar Padrões ✅
-- **Natureza:** Não-linear (Random Forest ideal)
-- **Sazonalidade:** SIM (ciclo semanal detectado)
-- **Tendência:** Presente
-
-### Etapa 10-11: Seleção e Divisão ✅
-- **Modelos:** Random Forest, Regressão Logística, SVM Linear
-- **Divisão:** 70% treino (572.570) / 30% teste (245.388)
-- **Normalização:** StandardScaler aplicado
-
-### Etapa 12: Avaliação de Modelos ✅
-- **Random Forest:** AUC-ROC = 0.9861 ⭐ MELHOR
-- **Regressão Logística:** AUC-ROC = 0.9837
-- **SVM Linear:** AUC-ROC = 0.1809
-
-### Etapa 13: Análise de Resíduos ✅ **EXPANDIDO**
-- **Teste Shapiro-Wilk:** p < 0.05 (resíduos não-normais)
-- **Q-Q Plot:** Gerado para análise visual
-- **Scatter:** Resíduos vs Probabilidades
-
-### Etapa 14: Detectar Anomalias ✅ **NOVO**
-- **Método:** Isolation Forest
-- **Contamination:** 5%
-- **Resultado:** 12.270 anomalias detectadas (5.00%)
-
-### Etapa 15: Testes Estatísticos Finais ✅ **NOVO**
-- **Chi-Quadrado:** p=0.0 (predições correlacionadas com reais)
-- **Cohen Kappa:** 0.2241 (RF) - Concordância "Razoável"
-- **Balanced Accuracy:** Calculado para todos os modelos
-
----
-
-## 🏆 Resultados
-
-### Performance dos Modelos
-
-| Modelo | Acurácia | Precisão | Recall | F1-Score | AUC-ROC |
-|--------|----------|----------|--------|----------|---------|
-| **Random Forest** ⭐ | 99.54% | 37.78% | 18.37% | 0.2472 | **0.9861** |
-| Regressão Logística | 94.83% | 7.35% | 100% | 0.1369 | 0.9837 |
-| SVM Linear | 97.02% | 8.61% | 65.24% | 0.1522 | 0.1809 |
-
-### Matriz de Confusão - Random Forest (Melhor Modelo)
-
-|   | Previsto Não-Fatal | Previsto Fatal |
-|---|-------------------|----------------|
-| **Real Não-Fatal** | 244.076 (TN) | 305 (FP) |
-| **Real Fatal** | 822 (FN) | 185 (TP) |
-
-**Interpretação:**
-- ✅ **Taxa FP:** 0.12% - Pouquíssimos alarmes falsos
-- ⚠️ **Taxa FN:** 81.63% - Detecta 18.37% dos acidentes fatais
-- 💡 **Trade-off aceitável:** Alta precisão (37.78%) com recall moderado
-
-### Feature Importance (Top 10)
-
-| Rank | Feature | Importância |
-|------|---------|-------------|
-| 1 | endereco_id | 21.24% |
-| 2 | periodo_dia | 16.73% |
-| 3 | dia | 15.57% |
-| 4 | mes | 15.38% |
-| 5 | ano | 8.57% |
-| 6 | numero_vitimas | 7.40% |
-| 7 | dia_semana | 7.01% |
-| 8 | hora | 3.85% |
-| 9 | descricao | 1.89% |
-| 10 | tipo_acidente | 1.46% |
-
-**Insight:** A localização (`endereco_id`) é o preditor mais importante (21.24%)!
-
-### Testes de Estacionariedade
-
-| Teste | P-valor | Resultado |
-|-------|---------|-----------|
-| ADF | 0.00001 | ✅ Estacionária |
-| KPSS | 0.01545 | ⚠️ Não-estacionária |
-
-**Interpretação:** Resultados contraditórios indicam série na "fronteira". Requer análise ACF/PACF.
-
----
-
-## 💻 Tecnologias Utilizadas
-
-### Core
-- **Python 3.12**
-- **pandas** & **numpy** - Manipulação de dados
-- **scikit-learn** - Machine Learning
-- **MySQL** + **SQLAlchemy** - Banco de dados
-
-### Visualização
-- **matplotlib** & **seaborn** - Gráficos
-
-### Análise de Séries Temporais
-- **statsmodels** - Decomposição, ADF, KPSS, ACF/PACF
-- **scipy.stats** - Testes estatísticos (Chi², Shapiro-Wilk)
-
-### Machine Learning Avançado
-- **RandomizedSearchCV** - Otimização de hiperparâmetros
-- **Isolation Forest** - Detecção de anomalias
-- **Cohen Kappa** - Concordância
-
----
-
-## 📁 Estrutura de Arquivos
-
-```
-projeto/
-│
-├── halving_search_1.2.1.py   # Código principal
-│
-├── outputs/                             # Arquivos gerados (15+)
-│   ├── 04_analise_outliers.csv
-│   ├── 06_visualizacao_serie.png
-│   ├── 07_decomposicao_series.png
-│   ├── 07_componentes_decomposicao.csv
-│   ├── 08_acf_pacf.png
-│   ├── 08_testes_estacionariedade.csv
-│   ├── 12_comparacao_modelos.csv
-│   ├── 12_resultados_modelos.png
-│   ├── 13_analise_residuos.csv
-│   ├── 13_analise_residuos_visual.png
-│   ├── 14_resumo_anomalias.csv
-│   ├── 15_testes_finais.csv
-│   ├── previsoes_proximos_3_dias.csv
-│   ├── resumo_matrizes_confusao.csv
-│   └── random_forest_modelo.pkl        # Modelo treinado
-│
-├── docs/
-│   ├── RESUMO_ALTERACOES_CODIGO.md     # Changelog técnico
-│   ├── DOCUMENTO_MUDANCAS_IMPLEMENTADAS.md
-│   └── CORRECOES_NUMERICAS_RELATORIO.md
-│
-└── README.md                            # Este arquivo
-```
-
----
-
-## 🚀 Como Executar
-
-### Pré-requisitos
 ```bash
-# Python 3.12+
-# MySQL Server rodando
-
-# Instalar dependências
-pip install pandas numpy matplotlib seaborn scikit-learn sqlalchemy mysql-connector-python statsmodels scipy
+uv venv && uv pip install -e ".[dev]"
 ```
 
-### Execução
 ```bash
-# Rodar pipeline completo
-python halving_search_15_ETAPAS_FINAL.py
-
-# Tempo esperado: 15-20 minutos
-# Saída: 15+ arquivos gerados
+.venv/bin/acidentes tudo
 ```
 
-### Configuração MySQL
+`tudo` executa as etapas em ordem; cada uma também roda sozinha:
+
+| Etapa | O que faz | Saída |
+| --- | --- | --- |
+| `baixar` | Baixa um zip por ano do portal da PRF (cerca de 35 MB no total) | `data/raw/` |
+| `ingerir` | Limpa, tipa e harmoniza categorias | `data/processed/acidentes.parquet` |
+| `treinar` | Treina e avalia os classificadores | `reports/metricas_classificacao.json`, figuras, `models/` |
+| `prever` | Backtest e previsão de 7 dias | `reports/metricas_serie.json`, `reports/previsao_7_dias.csv` |
+| `relatorio` | Monta o relatório a partir das métricas | `reports/RELATORIO.md` |
+
+O pipeline inteiro leva pouco mais de um minuto num notebook, quase todo no
+treino. Testes: `.venv/bin/pytest`.
+
+### Usar o modelo treinado
+
+`treinar` grava o modelo principal em `models/boosting_chamado.joblib`. Ele
+recebe uma tabela com as colunas de `features.CHAMADO` e devolve a
+probabilidade de morte:
+
 ```python
-# Ajustar credenciais no código (linha 50)
-engine = create_engine('mysql+mysqlconnector://USER:PASS@localhost/analise_transito')
+import joblib
+from acidentes import config
+from acidentes.ingestao import carregar
+
+modelo = joblib.load(config.MODELOS / "boosting_chamado.joblib")
+risco = modelo.predict_proba(carregar().tail(5))[:, 1]
 ```
 
----
+## Decisões
 
-## 📊 Outputs Gerados
+**Uma fonte só.** Os arquivos "agrupados por ocorrência" da PRF têm o mesmo
+esquema de 30 colunas desde 2017. RENAINF e RENAEST ficaram de fora: na V2
+entraram sem data nem gravidade, e foi isso que gerou o vazamento.
 
-### Visualizações (6 gráficos)
-1. **06_visualizacao_serie.png** - EDA com 6 subplots
-2. **07_decomposicao_series.png** - Tendência + Sazonalidade + Resíduos
-3. **08_acf_pacf.png** - Autocorrelação e série temporal
-4. **12_resultados_modelos.png** - Performance comparativa
-5. **13_analise_residuos_visual.png** - Normalidade dos resíduos
+**O que o modelo pode ver.** Só o que existe quando a ocorrência é comunicada:
+local (UF, município, BR, km, coordenadas), momento (hora, dia da semana, mês, fase do
+dia), via (tipo de pista, traçado, uso do solo), clima, tipo do acidente e
+número de veículos. Contagens de vítimas, classificação e causa são apuradas
+depois e estão numa lista de colunas proibidas em
+[features.py](src/acidentes/features.py), conferida por teste. O município tem
+milhares de valores e entra como a taxa de fatalidade observada no treino,
+calculada com ajuste cruzado.
 
-### Dados (10 CSVs)
-- Outliers, Estacionariedade, Resíduos, Anomalias
-- Matrizes de Confusão, Feature Importance
-- Testes Estatísticos, Comparação de Modelos
-- Previsões próximos 3 dias
+**Divisão temporal.** Treino em 2017–2023, escolha de limiar em 2024, teste em
+2025–2026. O modelo é sempre avaliado em datas posteriores às que viu.
 
-### Modelo Treinado
-- **random_forest_modelo.pkl** - Modelo serializado pronto para deploy
+**Métricas para classe rara.** Cerca de 7% dos acidentes têm morte. Acurácia e
+AUC-ROC escondem isso; o relatório usa PR-AUC, calibração e a fração dos fatais
+capturada nos 10% de maior risco.
 
----
+**Previsão só vale se bater a ingênua.** Cada modelo de série é comparado, em 52
+previsões semanais fora da amostra, com "repetir a semana passada".
 
-## 🎓 Aprendizados e Insights
+## Limites conhecidos
 
-### Técnicos
-- ✅ **Tratamento de desbalanceamento:** `class_weight='balanced'` funcionou bem
-- ✅ **Random Forest superior:** Ensemble learning > modelos lineares para este problema
-- ✅ **SVM Linear limitado:** Kernel linear muito simples (AUC 0.18 vs 0.98 do RF)
-- ✅ **Localização crítica:** `endereco_id` é o preditor #1 (21.24%)
+* O tipo do acidente é a variável mais forte e é registrado pelo policial no
+  local. O modelo "só contexto" mostra quanto sobra sem ele.
+* A base só tem acidentes atendidos pela PRF em rodovias federais. Não vale para
+  vias urbanas nem estaduais.
+* A PRF recodificou os tipos de acidente em 2021; as categorias foram agrupadas
+  em [ingestao.py](src/acidentes/ingestao.py), com perda de detalhe.
+* A previsão diária não conhece feriados, e erra neles.
+* Os links do Google Drive em [config.py](src/acidentes/config.py) mudam quando a
+  PRF republica os arquivos; `baixar` falha com mensagem clara se isso acontecer.
 
-### Metodológicos
-- ✅ **15 etapas implementadas:** Conformidade 100% com guia para realização do trabalho
-- ✅ **Série temporal adaptada:** Decomposição aplicada à taxa de fatalidade
-- ✅ **Testes robustos:** ADF + KPSS + ACF/PACF + Chi² + Kappa
-- ✅ **Anomalias detectadas:** 5% dos dados identificados como outliers multivariados
+## Estrutura
 
-### Negócio
-- 📍 **Locais de risco:** Alguns endereços têm taxa de fatalidade muito maior
-- 🕐 **Hora crítica:** 18h apresenta maior volume de acidentes
-- 📅 **Dia crítico:** Sábados têm 8.64% de taxa de fatalidade (vs 6.81% qui, 7.02% sex)
-- 🔄 **Sazonalidade semanal:** Padrão de 7 dias confirmado
+```
+src/acidentes/
+  config.py         caminhos, fontes e anos da divisão
+  baixar.py         download dos zips
+  ingestao.py       CSV bruto -> Parquet tipado
+  features.py       colunas permitidas, colunas proibidas, divisão temporal
+  classificacao.py  modelos, limiar, métricas, figuras
+  serie.py          série diária, backtest, previsão
+  relatorio.py      RELATORIO.md a partir dos JSONs
+  graficos.py       estilo das figuras
+tests/              ingestão, vazamento, divisão, métricas, backtest
+docs/               diagnóstico da versão anterior
+reports/            resultados gerados
+```
 
----
-
-## 📝 Changelog: Versão 2.0 (Nov 2025)
-
-### ✨ Novas Funcionalidades
-- ✅ **Etapa 4:** Análise de Outliers (Z-Score + IQR)
-- ✅ **Etapa 7:** Decomposição de Série Temporal (Tendência/Sazonalidade/Resíduos)
-- ✅ **Etapa 8:** Testes de Estacionariedade (ADF + KPSS + ACF/PACF)
-- ✅ **Etapa 13:** Análise de Resíduos Expandida (Shapiro-Wilk + Q-Q Plot)
-- ✅ **Etapa 14:** Detecção de Anomalias (Isolation Forest)
-- ✅ **Etapa 15:** Testes Estatísticos Finais (Chi² + Kappa)
-
-### 🔄 Melhorias
-- ⬆️ **Dataset:** 45k → 817k registros (+1700%)
-- ⬆️ **Código:** 500 → 900+ linhas (+80%)
-- ⬆️ **Arquivos gerados:** 6 → 15+ (+150%)
-- ⬆️ **Importações:** 12 → 22 bibliotecas (+83%)
-- ⬆️ **Etapas:** 12 → 15 completas (+25%)
-
-### 🐛 Correções
-- ✅ **Importações corrigidas:** `chi2_contingency` de `scipy.stats` (não `sklearn.metrics`)
-- ✅ **ADF/KPSS corrigidos:** De `statsmodels.tsa.stattools` (não `scipy.stats`)
-- ✅ **Figsize corrigido:** Etapa 7 agora usa `plt.subplots()` ao invés de `decomposicao.plot()`
-
-### 📊 Resultados Atualizados
-- 🔄 **AUC-ROC RF:** 0.9862 → 0.9861
-- 🔄 **Recall RF:** 16.68% → 18.37% (melhoria!)
-- 🔄 **Feature #1:** dia_semana → endereco_id
-- 🔄 **SVM:** 0.0342 → 0.1809 (grande correção)
-
----
-
-## 🔮 Próximos Passos
-
-### Em Planejamento
-- [ ] Adicionar mais 2 datasets (meta: 5M+ registros)
-- [ ] Implementar Redes Neurais (MLP/LSTM)
-- [ ] Dashboard interativo (Streamlit/Dash)
-
-### Melhorias Técnicas
-- [ ] Feature engineering avançado (clustering de endereços)
-- [ ] Ensemble stacking (RF + LR + XGBoost)
-- [ ] Calibração de probabilidades
-- [ ] Cross-validation temporal
-
-### Deploy
-- [ ] API REST para servir modelo
-- [ ] Containerização (Docker)
-- [ ] CI/CD pipeline
-- [ ] Monitoramento de drift
-
----
-
-## 👨‍💻 Autor
-
-**Octavio Augusto Arruda dos Prazeres**  
-Engenharia de Software | Universidade UNA
-📧 Email: arrudaoctavio178@gmail.com 
-🔗 LinkedIn: www.linkedin.com/in/octavio-prazeres
-📂 GitHub: https://github.com/SecreTavin
-
----
-
-## 📚 Referências
-
-1. **He, H., & Garcia, E. A.** (2009). Learning from imbalanced data. *IEEE Transactions on Knowledge and Data Engineering*, 21(9), 1263-1284.
-
-2. **Cleveland, R. B., et al.** (1990). STL: A seasonal-trend decomposition. *Journal of Official Statistics*, 6(1), 3-73.
-
-3. **Dickey, D. A., & Fuller, W. A.** (1979). Distribution of the estimators for autoregressive time series with a unit root. *Journal of the American Statistical Association*, 74(366), 427-431.
-
-4. **Kwiatkowski, D., et al.** (1992). Testing the null hypothesis of stationarity. *Journal of Econometrics*, 54(1-3), 159-178.
-
-5. **Liu, F. T., Ting, K. M., & Zhou, Z. H.** (2008). Isolation Forest. *IEEE International Conference on Data Mining*, 413-422.
-
----
-
-## 📄 Licença
-
-Este projeto foi desenvolvido para fins acadêmicos como parte do trabalho A3 da disciplina de Inteligência Artificial.
-
----
-
-**📅 Última Atualização:** 15 de Novembro de 2025  
-**🏷️ Versão:** 2.0 - Completa com 15 Etapas  
-**📊 Status:** ✅ Pronto para Apresentação A3
+Fonte dos dados: [Dados abertos da PRF](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf).
