@@ -1,0 +1,106 @@
+{
+  "divisao": {
+    "treino": {
+      "anos": "2017–2023",
+      "n": 486982
+    },
+    "validacao": {
+      "anos": "2024",
+      "n": 73202
+    },
+    "teste": {
+      "de": "01/01/2025",
+      "ate": "30/09/2026",
+      "n": 127424
+    }
+  },
+  "principal": "Boosting (chamado)",
+  "modelos": {
+    "Logística (chamado)": {
+      "n": 127424,
+      "prevalencia": 0.07171333500753391,
+      "pr_auc": 0.3132311194098995,
+      "roc_auc": 0.8153932015686801,
+      "brier": 0.05681886422667141,
+      "limiar": 0.18077291823923985,
+      "precisao": 0.34025403028822665,
+      "recall": 0.45732107682206175,
+      "f1": 0.3901960784313726,
+      "captura_top10": 0.465637995184942,
+      "precisao_top10": 0.33393501805054154,
+      "por_ano": {
+        "2025": 0.31810561952766714,
+        "2026": 0.3075908210225234
+      }
+    },
+    "Boosting (chamado)": {
+      "n": 127424,
+      "prevalencia": 0.07171333500753391,
+      "pr_auc": 0.34150937416316657,
+      "roc_auc": 0.8342293244228416,
+      "brier": 0.05541057697427952,
+      "limiar": 0.1945742064583687,
+      "precisao": 0.3651463221724229,
+      "recall": 0.4546946815495732,
+      "f1": 0.40502997514256467,
+      "captura_top10": 0.47898883782009194,
+      "precisao_top10": 0.34350965311568044,
+      "por_ano": {
+        "2025": 0.3425230690532374,
+        "2026": 0.34057737115910813
+      }
+    },
+    "Boosting (só contexto)": {
+      "n": 127424,
+      "prevalencia": 0.07171333500753391,
+      "pr_auc": 0.18099632553667647,
+      "roc_auc": 0.7241131616750165,
+      "brier": 0.06302182381298714,
+      "limiar": 0.11127787180275227,
+      "precisao": 0.17364384068015895,
+      "recall": 0.4112497264171591,
+      "f1": 0.24418453541260557,
+      "captura_top10": 0.29371853797329833,
+      "precisao_top10": 0.21064197143305605,
+      "por_ano": {
+        "2025": 0.1876194891508725,
+        "2026": 0.1729198657567893
+      }
+    }
+  },
+  "importancia": {
+    "tipo_acidente": 0.1789,
+    "veiculos": 0.05742,
+    "municipio": 0.03175,
+    "uso_solo": 0.02152,
+    "hora": 0.01547,
+    "br": 0.01008,
+    "fase_dia": 0.0072,
+    "uf": 0.00556,
+    "km": 0.00206,
+    "tracado_curva": 0.00164,
+    "tracado_declive": 0.00141,
+    "tipo_pista": 0.0013,
+    "latitude": 0.00125,
+    "tracado_reta": 0.00098,
+    "longitude": 0.00086,
+    "dia_semana": 0.00079,
+    "tracado_ponte": 0.00051,
+    "condicao_metereologica": 0.00044,
+    "tracado_rotatoria": 0.00043,
+    "tracado_intersecao_de_vias": 0.00039,
+    "mes": 0.00023,
+    "sentido_via": 0.00016,
+    "tracado_viaduto": 6e-05,
+    "tracado_retorno_regulamentado": 6e-05,
+    "tracado_desvio_temporario": 3e-05,
+    "tracado_em_obras": 2e-05,
+    "tracado_tunel": 0.0,
+    "tracado_aclive": -0.00028
+  },
+  "figuras": {
+    "pr": "figuras/precisao_recall.png",
+    "calibracao": "figuras/calibracao.png",
+    "importancia": "figuras/importancia.png"
+  }
+}
